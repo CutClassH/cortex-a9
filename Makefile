@@ -22,7 +22,7 @@ LFLAGS   = -Wall -T $(LFILE) -nostartfiles -fno-exceptions --specs=nosys.specs -
 
 GDB = $(TOOLCHAIN)-gdb
 QEMU = qemu-system-arm
-QEMU_OPTS = -M vexpress-a9 -serial mon:stdio -kernel
+QEMU_OPTS = -M vexpress-a9 --nographic -serial mon:stdio -kernel
 
 
 

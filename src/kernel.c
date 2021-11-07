@@ -6,21 +6,56 @@
 #include "sp804.h"
 #include "interrupt.h"
 
+extern void MMU_TestSetup();
 int main(void){
- 	interrupt_init();
-	clcd_init();
- 	kb_init();
- 	timer_init();
- 	UG_FillCircle(100, 100, 30, C_YELLOW);
- 	UG_FillCircle(200, 100, 10, C_RED);
- 	UG_FillCircle(250, 100, 10, C_BLUE);
- 	UG_FillCircle(350, 100, 20, C_GREEN);
- 	UG_FillCircle(300, 100, 10, 0xff0000);
- 	UG_DrawFrame(400,400,440,440,C_WHITE);
- 	UG_FontSelect(&FONT_16X26);
- 	UG_SetBackcolor(C_BLACK);
-	UG_SetForecolor(C_YELLOW);
- 	UG_PutString (200,200 ,"hello form the other side\nthis is a new line hehehehehhehehehehehehe") ;
+ 	//interrupt_init();
+	int i;
+ 	//timer_init();
+	printf("Hello,World!\n");
+
+	for(i = 0; i < 64; i=i+4){
+		*(volatile uint32_t*)(0x63000000+i) = i << 16;
+	}
+	MMU_TestSetup();
+	// for(i = 0; i < 64/4; i++){
+	// 	printf("%8lx ",*(volatile uint32_t*)(0x61000000+i));
+	// 	if (i % 8 == 7)
+	// 		printf("\n");
+	// }
+	for(i = 0; i < 64; i=i+4){
+		printf("%8lx ",*(volatile uint32_t*)(0x62000000+i));
+		if (i % 32 == 28)
+			printf("\n");
+	}
+	printf("\n");
+	for(i = 0; i < 64; i=i+4){
+		printf("%8lx ",*(volatile uint32_t*)(0x63000000+i));
+		if (i % 32 == 28)
+			printf("\n");
+	}
+	printf("\n");
+	for(i = 0; i < 64; i=i+4){
+		printf("%8lx ",*(volatile uint32_t*)(0x64000000+i));
+		if (i % 32 == 28)
+			printf("\n");
+	}
+
+	for(i = 0; i < 64; i=i+4){
+		*(volatile uint32_t*)(0x64000000+i) = i << 8;
+	}
+
+	printf("\n\n");
+	for(i = 0; i < 64; i=i+4){
+		printf("%8lx ",*(volatile uint32_t*)(0x63000000+i));
+		if (i % 32 == 28)
+			printf("\n");
+	}
+	printf("\n");
+	for(i = 0; i < 64; i=i+4){
+		printf("%8lx ",*(volatile uint32_t*)(0x64000000+i));
+		if (i % 32 == 28)
+			printf("\n");
+	}
  	asm volatile("SVC 0x05");
  	for(;;);
 	return 0;
